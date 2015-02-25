@@ -2,11 +2,13 @@ package nona.gameengine2d.core;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
 
 import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.opengl.GLContext;
 
 public class CoreEngine {
 
@@ -21,18 +23,20 @@ public class CoreEngine {
 	private int height;
 	private String title;
 	
-	public CoreEngine(int width, int height, String title, int fps) {
+	private Game game;
+	
+	public CoreEngine(int width, int height, String title, int fps, Game game) {
 		this.width = width;
 		this.height = height;
 		this.title = title;
 		this.nsPerUpdate = 1000000000.0 / fps;
+		this.game = game;
 		
 		this.running = false;
 	}
 	
 	public void start() {
 		running = true;
-		init();
 		run();
 	}
 	
@@ -41,6 +45,8 @@ public class CoreEngine {
 	}
 	
 	private void run() {
+		init();
+		
 		long lastTime = System.nanoTime();
 		long now;
 		double delta = 0;
@@ -63,7 +69,7 @@ public class CoreEngine {
 			
 			while (delta >= nsPerUpdate) {
 				delta -= nsPerUpdate;
-				update((float) delta);
+				update((float)delta);
 				updates++;
 				shouldRender = true;
 			}
@@ -85,12 +91,18 @@ public class CoreEngine {
 	
 	private void update(float delta) {
 		glfwPollEvents();
+		game.update(delta);
 	}
 	
 	private void render() {
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		game.render();
+		
 		glfwSwapBuffers(window);
 	}
-	
+
 	private void init() {
 		if (glfwInit() != GL_TRUE) {
 			// TODO: Proper Error handling
@@ -111,6 +123,22 @@ public class CoreEngine {
 		
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
+		GLContext.createFromCurrent();
+		glfwSwapInterval(0);
+
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		
+		System.out.println(glGetString(GL_VERSION));
+		
+		glFrontFace(GL_CW);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		
+		glEnable(GL_DEPTH_TEST);
+		
+		game.init();
 	}
 	
 }
