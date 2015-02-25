@@ -24,11 +24,17 @@ public class TestGame extends Game {
 			.addVertexShader("basic_shader")
 			.addFragmentShader("basic_shader")
 			.compile();
+		
+		shader.addUniform("u_clampValue");
 	}
 	
+	float time = 0.0f;
 	@Override
 	public void update(float delta) {
-		
+		time += 0.01f;
+		shader.bind();
+		shader.setUniformFloat("u_clampValue", (float)Math.abs(Math.sin(time)));
+		shader.unbind();
 	}
 
 	@Override

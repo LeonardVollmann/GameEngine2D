@@ -7,10 +7,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+
+import nona.gameengine2d.core.Util;
+import nona.gameengine2d.maths.Matrix4f;
+import nona.gameengine2d.maths.Vector3f;
 
 public class Shader {
 	
-	protected int program;
+	private int program;
+	private HashMap<String, Integer> uniforms;
 	
 	public static String loadShaderSource(String path, String extension) {
 		StringBuilder shaderSource = new StringBuilder();
@@ -36,8 +42,9 @@ public class Shader {
 		this.program = glCreateProgram();
 		if (program == 0) {
 			// TODO: Proper Error handling
-						System.err.println("ERROR: Shader program creation failed.");
+			System.err.println("ERROR: Shader program creation failed.");
 		}
+		this.uniforms = new HashMap<String, Integer>();
 		
 		glBindAttribLocation(program, 0, "in_position");
 	}
@@ -69,6 +76,32 @@ public class Shader {
 		}
 		
 		return this;
+	}
+	
+	public void addUniform(String uniform) {
+		int location = glGetUniformLocation(program, uniform);
+		if (location == 0xFFFFFFFF) {
+			// TODO: Proper Error handling
+			System.err.println("ERROR: Could not find uniform: " + uniform + ".");
+		}
+		
+		uniforms.put(uniform, location);
+	}
+	
+	public void setUniformInteger(String uniform, int value) {
+		glUniform1i(uniforms.get(uniform), value);
+	}
+	
+	public void setUniformFloat(String uniform, float value) {
+		glUniform1f(uniforms.get(uniform), value);
+	}
+	
+	public void setUniformVector3f(String uniform, Vector3f value) {
+		glUniform3f(uniforms.get(uniform), value.getX(), value.getY(), value.getZ());
+	}
+	
+	public void setUniformMatrix4f(String uniform, Matrix4f value) {
+		glUniformMatrix4(uniforms.get(uniform), true, Util.createFlippedMatrix4fBuffer(value));
 	}
 	
 	public void bind() {

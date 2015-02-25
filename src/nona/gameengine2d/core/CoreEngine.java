@@ -2,7 +2,6 @@ package nona.gameengine2d.core;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
@@ -44,6 +43,7 @@ public class CoreEngine {
 		running = false;
 	}
 	
+	@SuppressWarnings("unused")
 	private void run() {
 		init();
 		
