@@ -1,7 +1,7 @@
 #version 330 core
 
-in vec3 pass_color;
 in vec2 pass_texCoord;
+in vec3 pass_color;
 
 out vec4 out_fragColor;
 
