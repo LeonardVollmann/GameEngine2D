@@ -27,13 +27,15 @@ public class Rectangle extends Primitive {
 			new Vertex(new Vector3f(-xCoord, -yCoord, 0.0f), new Vector2f(0.0f, 0.0f)),
 			new Vertex(new Vector3f(-xCoord,  yCoord, 0.0f), new Vector2f(0.0f, 1.0f)),
 			new Vertex(new Vector3f( xCoord,  yCoord, 0.0f), new Vector2f(1.0f, 1.0f)),
-			
-			new Vertex(new Vector3f(-xCoord, -yCoord, 0.0f), new Vector2f(0.0f, 0.0f)),
-			new Vertex(new Vector3f( xCoord,  yCoord, 0.0f), new Vector2f(1.0f, 1.0f)),
 			new Vertex(new Vector3f( xCoord, -yCoord, 0.0f), new Vector2f(1.0f, 0.0f))
 		};
 		
-		mesh = new Mesh(vertices);
+		short[] indices = {
+			0, 1, 2,
+			0, 2, 3
+		};
+		
+		mesh = new Mesh(vertices, indices);
 	}
 
 	public float getWidth() {
