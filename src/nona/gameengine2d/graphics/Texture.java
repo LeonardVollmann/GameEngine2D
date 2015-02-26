@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -22,7 +22,7 @@ public class Texture {
 		System.out.println("First");
 		BufferedImage image = null;
         try {
-            image = ImageIO.read(new FileInputStream("./res/textures/" + path));
+            image = ImageIO.read(new File("./res/textures/" + path));
             System.out.println("Second");
         } catch (IOException e) {
             e.printStackTrace();
