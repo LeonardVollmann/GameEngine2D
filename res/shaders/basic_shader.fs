@@ -1,9 +1,14 @@
-#version 120
+#version 330 core
 
-varying vec3 var_color;
+in vec3 pass_color;
+in vec2 pass_texCoord;
+
+out vec4 out_fragColor;
+
+uniform sampler2D sampler;
 
 void main()
 {
-	//gl_FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	gl_FragColor = vec4(var_color, 1.0);
+	out_fragColor = vec4(pass_color, 1.0);
+	//out_fragColor = texture(sampler, pass_texCoord.xy);
 }

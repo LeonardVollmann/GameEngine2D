@@ -17,6 +17,7 @@ public class Util {
 		
 		for (int i = 0; i < vertices.length; i++) {
 			buffer.put(vertices[i].getPos().getV());
+			buffer.put(vertices[i].getTexCoord().getV());
 		}
 		
 		buffer.flip();

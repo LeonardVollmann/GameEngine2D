@@ -47,6 +47,7 @@ public class Shader {
 		this.uniforms = new HashMap<String, Integer>();
 		
 		glBindAttribLocation(program, 0, "in_position");
+		glBindAttribLocation(program, 1, "in_texCoord");
 	}
 	
 	public Shader addVertexShader(String path) {
