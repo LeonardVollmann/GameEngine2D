@@ -4,18 +4,22 @@ import nona.gameengine2d.core.Game;
 import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.graphics.Camera;
 import nona.gameengine2d.graphics.Shader;
-import nona.gameengine2d.graphics.Texture;
+import nona.gameengine2d.graphics.Window;
 import nona.gameengine2d.graphics.primitives.Rectangle;
 import nona.gameengine2d.maths.Vector2f;
 
 public class TestGame extends Game {
 	
 	private Shader shader;
-	private Texture texture;
+//	private Texture texture;
 	private Rectangle rect;
 	private Transform transform;
 	private Camera camera;
-
+	
+	public TestGame() {
+		super();
+	}
+	
 	@Override
 	public void init() {
 		shader = new Shader()
@@ -35,6 +39,8 @@ public class TestGame extends Game {
 	float time = 0.0f;
 	@Override
 	public void update(float delta) {
+		super.update(delta);
+
 		time += 0.01f;
 		float sinTime = (float)(Math.sin(time));
 		float cosTime = (float)(Math.cos(time));
@@ -46,7 +52,7 @@ public class TestGame extends Game {
 		shader.bind();
 		//texture.unbind();
 		shader.setUniformMatrix4f("u_transform", transform.getTransformation());
-		shader.setUniformMatrix4f("u_projection", Transform.getProjection());
+		shader.setUniformMatrix4f("u_projection", Window.getInstance().getProjection());
 		shader.setUniformMatrix4f("u_view", camera.getViewMatrix());
 		shader.unbind();
 		
@@ -56,6 +62,8 @@ public class TestGame extends Game {
 
 	@Override
 	public void render() {
+		super.render();
+		
 		shader.bind();
 		rect.draw();
 		shader.unbind();

@@ -5,8 +5,6 @@ import nona.gameengine2d.maths.Vector2f;
 import nona.gameengine2d.maths.Vector3f;
 
 public class Transform {
-	
-	private static Matrix4f projection;
 
 	private Vector3f translation;
 	private float rotation;
@@ -56,14 +54,6 @@ public class Transform {
 	
 	public void setScale(float x, float y) {
 		this.scale = new Vector2f(x, y);
-	}
-	
-	public static Matrix4f getProjection() {
-		return projection;
-	}
-	
-	public static void setProjection(Matrix4f projection) {
-		Transform.projection = projection;
 	}
 	
 }

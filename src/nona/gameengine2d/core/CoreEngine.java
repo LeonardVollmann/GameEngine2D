@@ -12,16 +12,14 @@ public class CoreEngine {
 	
 	private double nsPerUpdate;
 	
-	private Window window;
-	
 	private Game game;
 	
 	public CoreEngine(int width, int height, String title, int fps, Game game) {
-		this.window = new Window(width, height, title);
 		this.nsPerUpdate = 1000000000.0 / fps;
 		this.game = game;
-		
 		this.running = false;
+		
+		Window.init(width, height, title);
 	}
 	
 	public void start() {
@@ -48,7 +46,7 @@ public class CoreEngine {
 		boolean shouldRender = false;
 		
 		while (running) {
-			if (window.shouldClose() == GL_TRUE) {
+			if (Window.getInstance().shouldClose() == GL_TRUE) {
 				running = false;
 				continue;
 			}
@@ -85,11 +83,11 @@ public class CoreEngine {
 	}
 	
 	private void render() {
-		window.clear(0.0f, 0.0f, 0.0f, 1.0f);
+		Window.getInstance().clear(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		game.render();
 		
-		window.swapBuffers();
+		Window.getInstance().swapBuffers();
 	}
 
 	private void init() {

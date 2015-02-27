@@ -6,7 +6,6 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
 
-import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.maths.Matrix4f;
 
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -15,9 +14,27 @@ import org.lwjgl.opengl.GLContext;
 
 public class Window {
 
+	private static Window instance;
+	
+	public static Window getInstance() {
+		if (instance == null) {
+			// TODO: Proper Error handling
+			System.err.println("ERROR: Call Window.init(int width, int height, String title) before Window.getInstance()");
+			return null;
+		}
+		
+		return instance;
+	}
+	
+	public static void init(int width, int height, String title) {
+		instance = new Window(width, height, title);
+	}
+	
 	private long window;
 	
-	public Window(int width, int height, String title) {
+	private Matrix4f projection;
+	
+	private Window(int width, int height, String title) {
 		if (glfwInit() != GL_TRUE) {
 			// TODO: Proper Error handling
 			System.err.println("ERROR: Failed to initialise GLFW.");
@@ -67,9 +84,13 @@ public class Window {
 		glfwSwapBuffers(window);
 	}
 	
+	public Matrix4f getProjection() {
+		return projection;
+	}
+	
 	private void updateProjection(int width, int height) {
 		float aspect = (float)width / (float)height;
-		Transform.setProjection(new Matrix4f().initOrthographicProjection(-aspect, aspect, -1, 1, -0.01f, 100.0f));
+		projection = new Matrix4f().initOrthographicProjection(-aspect, aspect, -1, 1, -0.01f, 100.0f);
 	}
 	
 }

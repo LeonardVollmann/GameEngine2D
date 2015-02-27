@@ -1,9 +1,24 @@
 package nona.gameengine2d.core;
 
-public abstract class Game {
+import nona.gameengine2d.entity.Entity;
 
+
+public abstract class Game {
+	
+	protected Entity root;
+	
+	public Game() {
+		root = new Entity();
+	}
+	
 	public abstract void init();
-	public abstract void update(float delta);
-	public abstract void render();
+	
+	public void update(float delta) {
+		root.update(delta);
+	}
+	
+	public void render() {
+		root.render();
+	}
 	
 }
