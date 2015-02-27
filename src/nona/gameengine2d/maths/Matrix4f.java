@@ -51,6 +51,20 @@ public class Matrix4f {
 		
 		return this;
 	}
+	
+	public Matrix4f initOrthographicProjection(float left, float right, float bottom, float top, float near, float far) {
+		m[0][0] = 2.0f / (right - left); m[0][1] = 0;
+		m[1][0] = 0; 					 m[1][1] = 2.0f / (top - bottom);
+		m[2][0] = 0; 					 m[2][1] = 0;
+		m[3][0] = 0; 					 m[3][1] = 0;
+		
+		m[0][2] = 0; 					m[0][3] = -((right + left) / (right - left));
+		m[1][2] = 0; 					m[1][3] = -((top + bottom) / (top - bottom));
+		m[2][2] = -2.0f / (far - near); m[2][3] = (far + near) / (far - near);
+		m[3][2] = 0; 					m[3][3] = 1;
+		
+		return this;
+	}
 
 	public Matrix4f mul(Matrix4f r) {
 		Matrix4f result = new Matrix4f();

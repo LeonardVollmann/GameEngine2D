@@ -2,12 +2,7 @@ package nona.gameengine2d.core;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
-
-import java.nio.ByteBuffer;
-
-import org.lwjgl.glfw.GLFWvidmode;
-import org.lwjgl.opengl.GLContext;
+import nona.gameengine2d.graphics.Window;
 
 public class CoreEngine {
 
@@ -17,17 +12,12 @@ public class CoreEngine {
 	
 	private double nsPerUpdate;
 	
-	private long window;
-	private int width;
-	private int height;
-	private String title;
+	private Window window;
 	
 	private Game game;
 	
 	public CoreEngine(int width, int height, String title, int fps, Game game) {
-		this.width = width;
-		this.height = height;
-		this.title = title;
+		this.window = new Window(width, height, title);
 		this.nsPerUpdate = 1000000000.0 / fps;
 		this.game = game;
 		
@@ -58,7 +48,7 @@ public class CoreEngine {
 		boolean shouldRender = false;
 		
 		while (running) {
-			if (glfwWindowShouldClose(window) == GL_TRUE) {
+			if (window.shouldClose() == GL_TRUE) {
 				running = false;
 				continue;
 			}
@@ -95,53 +85,21 @@ public class CoreEngine {
 	}
 	
 	private void render() {
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		window.clear(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		game.render();
 		
-		glfwSwapBuffers(window);
+		window.swapBuffers();
 	}
 
 	private void init() {
-		if (glfwInit() != GL_TRUE) {
-			// TODO: Proper Error handling
-			System.err.println("ERROR: Failed to initialise GLFW.");
-			System.exit(1);
-		}
-		
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-		window = glfwCreateWindow(width, height, title, NULL, NULL);
-		if (window == NULL) {
-			// TODO: Proper Error handling
-			System.err.println("ERROR: Failed to create window.");
-			System.exit(1);
-		}
-		
-		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - width) / 2, (GLFWvidmode.height(vidmode) - height) / 2);
-		
-		glfwMakeContextCurrent(window);
-		glfwShowWindow(window);
-		GLContext.createFromCurrent();
-		glfwSwapInterval(0);
-		
-		initGraphics();
-		
-		game.init();
-	}
-	
-	private void initGraphics() {
 		glFrontFace(GL_CW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		
 		glEnable(GL_DEPTH_TEST);
+		
+		game.init();
 	}
 	
 }

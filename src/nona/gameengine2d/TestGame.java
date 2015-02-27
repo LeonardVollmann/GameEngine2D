@@ -2,13 +2,10 @@ package nona.gameengine2d;
 
 import nona.gameengine2d.core.Game;
 import nona.gameengine2d.core.Transform;
-import nona.gameengine2d.graphics.Mesh;
 import nona.gameengine2d.graphics.Shader;
 import nona.gameengine2d.graphics.Texture;
-import nona.gameengine2d.graphics.Vertex;
 import nona.gameengine2d.graphics.primitives.Rectangle;
-import nona.gameengine2d.maths.Vector2f;
-import nona.gameengine2d.maths.Vector3f;
+import nona.gameengine2d.maths.Matrix4f;
 
 public class TestGame extends Game {
 	
@@ -16,6 +13,7 @@ public class TestGame extends Game {
 	private Texture texture;
 	private Rectangle rect;
 	private Transform transform;
+	private Matrix4f projection;
 
 	@Override
 	public void init() {
@@ -24,6 +22,7 @@ public class TestGame extends Game {
 			.addFragmentShader("basic_shader")
 			.compile();
 		shader.addUniform("u_transform");
+		shader.addUniform("u_projection");
 		
 		//texture = new Texture("bricks.png");
 		rect = new Rectangle(0.5f, 0.5f);
@@ -36,13 +35,14 @@ public class TestGame extends Game {
 		time += 0.01f;
 		float sinTime = (float)(Math.sin(time));
 		float cosTime = (float)(Math.cos(time));
-		transform.setTranslation(sinTime / 2.0f, cosTime / 2.0f, 0.0f);
-		transform.setRotation(time);
-		transform.setScale(sinTime, sinTime);
+//		transform.setTranslation(sinTime / 2.0f, cosTime / 2.0f, 0.0f);
+//		transform.setRotation(time);
+//		transform.setScale(sinTime, sinTime);
 		//texture.bind();
 		shader.bind();
 		//texture.unbind();
 		shader.setUniformMatrix4f("u_transform", transform.getTransformation());
+		shader.setUniformMatrix4f("u_projection", Transform.getProjection());
 		shader.unbind();
 		
 //		rect.setWidth(sinTime);
