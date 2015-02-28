@@ -1,12 +1,17 @@
 package nona.gameengine2d;
 
+import nona.gameengine2d.components.MeshRenderer;
 import nona.gameengine2d.core.Game;
 import nona.gameengine2d.core.Transform;
+import nona.gameengine2d.entity.Entity;
 import nona.gameengine2d.graphics.Camera;
+import nona.gameengine2d.graphics.Mesh;
 import nona.gameengine2d.graphics.Shader;
+import nona.gameengine2d.graphics.Vertex;
 import nona.gameengine2d.graphics.Window;
 import nona.gameengine2d.graphics.primitives.Rectangle;
 import nona.gameengine2d.maths.Vector2f;
+import nona.gameengine2d.maths.Vector3f;
 
 public class TestGame extends Game {
 	
@@ -34,6 +39,23 @@ public class TestGame extends Game {
 		rect = new Rectangle(0.5f, 0.5f);
 		transform = new Transform();
 		camera = new Camera(new Vector2f(0.0f, 0.0f));
+		
+		float xCoord = 0.5f;
+		float yCoord = 0.5f;
+		Vertex[] vertices = {
+			new Vertex(new Vector3f(-xCoord, -yCoord, 0.0f), new Vector2f(0.0f, 0.0f)),
+			new Vertex(new Vector3f(-xCoord,  yCoord, 0.0f), new Vector2f(0.0f, 1.0f)),
+			new Vertex(new Vector3f( xCoord,  yCoord, 0.0f), new Vector2f(1.0f, 1.0f)),
+			new Vertex(new Vector3f( xCoord, -yCoord, 0.0f), new Vector2f(1.0f, 0.0f))
+		};
+			
+		short[] indices = {
+			0, 1, 2,
+			0, 2, 3
+		};
+		
+		Mesh mesh = new Mesh(vertices, indices);
+		root.addChild(new Entity().addComponent(new MeshRenderer(mesh)));
 	}
 	
 	float time = 0.0f;
@@ -52,7 +74,7 @@ public class TestGame extends Game {
 		shader.bind();
 		//texture.unbind();
 		shader.setUniformMatrix4f("u_transform", transform.getTransformation());
-		shader.setUniformMatrix4f("u_projection", Window.getInstance().getProjection());
+		shader.setUniformMatrix4f("u_projection", Transform.getCamera().getProjection());
 		shader.setUniformMatrix4f("u_view", camera.getViewMatrix());
 		shader.unbind();
 		
@@ -60,13 +82,13 @@ public class TestGame extends Game {
 //		rect.setHeight(cosTime);
 	}
 
-	@Override
-	public void render() {
-		super.render();
-		
-		shader.bind();
-		rect.draw();
-		shader.unbind();
-	}
+//	@Override
+//	public void render() {
+//		super.render();
+//		
+//		shader.bind();
+//		rect.draw();
+//		shader.unbind();
+//	}
 
 }

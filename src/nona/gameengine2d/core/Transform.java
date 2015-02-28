@@ -1,11 +1,14 @@
 package nona.gameengine2d.core;
 
+import nona.gameengine2d.graphics.Camera;
 import nona.gameengine2d.maths.Matrix4f;
 import nona.gameengine2d.maths.Vector2f;
 import nona.gameengine2d.maths.Vector3f;
 
 public class Transform {
 
+	private static Camera camera = new Camera();
+	
 	private Vector3f translation;
 	private float rotation;
 	private Vector2f scale;
@@ -22,6 +25,14 @@ public class Transform {
 		Matrix4f scaleMatrix = new Matrix4f().initScaleXY(scale.getX(), scale.getY());
 		
 		return translationMatrix.mul(rotationMatrix).mul(scaleMatrix);
+	}
+	
+	public static Camera getCamera() {
+		return camera;
+	}
+	
+	public static void setCamera(Camera camera) {
+		Transform.camera = camera;
 	}
 	
 	public Vector3f getTranslation() {

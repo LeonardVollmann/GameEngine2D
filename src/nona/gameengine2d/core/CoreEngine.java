@@ -2,6 +2,7 @@ package nona.gameengine2d.core;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import nona.gameengine2d.graphics.RenderingEngine;
 import nona.gameengine2d.graphics.Window;
 
 public class CoreEngine {
@@ -9,7 +10,6 @@ public class CoreEngine {
 	public static final boolean IGNORE_FRAMECAP = true;
 	
 	private boolean running;
-	
 	private double nsPerUpdate;
 	
 	private Game game;
@@ -83,11 +83,13 @@ public class CoreEngine {
 	}
 	
 	private void render() {
-		Window.getInstance().clear(0.0f, 0.0f, 0.0f, 1.0f);
+//		Window.getInstance().clear(0.0f, 0.0f, 0.0f, 1.0f);
+//		
+//		game.render();
+//		
+//		Window.getInstance().swapBuffers();
 		
-		game.render();
-		
-		Window.getInstance().swapBuffers();
+		RenderingEngine.getInstance().render(game.getRootEntity());
 	}
 
 	private void init() {

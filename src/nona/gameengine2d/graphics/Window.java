@@ -6,6 +6,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
 
+import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.maths.Matrix4f;
 
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -84,13 +85,8 @@ public class Window {
 		glfwSwapBuffers(window);
 	}
 	
-	public Matrix4f getProjection() {
-		return projection;
-	}
-	
 	private void updateProjection(int width, int height) {
-		float aspect = (float)width / (float)height;
-		projection = new Matrix4f().initOrthographicProjection(-aspect, aspect, -1, 1, -0.01f, 100.0f);
+		Transform.getCamera().updateProjection((float)width / (float)height);
 	}
 	
 }

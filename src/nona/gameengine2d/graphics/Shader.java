@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.core.Util;
 import nona.gameengine2d.maths.Matrix4f;
 import nona.gameengine2d.maths.Vector3f;
@@ -103,6 +104,9 @@ public class Shader {
 	
 	public void setUniformMatrix4f(String uniform, Matrix4f value) {
 		glUniformMatrix4(uniforms.get(uniform), true, Util.createFlippedMatrix4fBuffer(value));
+	}
+	
+	public void updateUniforms(Transform transform) {
 	}
 	
 	public void bind() {

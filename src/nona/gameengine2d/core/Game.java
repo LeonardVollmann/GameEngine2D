@@ -17,8 +17,8 @@ public abstract class Game {
 		root.update(delta);
 	}
 	
-	public void render() {
-		root.render();
+	public Entity getRootEntity() {
+		return root;
 	}
 	
 }

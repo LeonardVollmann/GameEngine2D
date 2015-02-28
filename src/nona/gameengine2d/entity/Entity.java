@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nona.gameengine2d.core.Transform;
+import nona.gameengine2d.graphics.Shader;
 
 public class Entity {
 
@@ -18,12 +19,14 @@ public class Entity {
 		this.children = new ArrayList<Entity>();
 	}
 	
-	public void addComponent(EntityComponent component) {
+	public Entity addComponent(EntityComponent component) {
 		components.add(component);
+		return this;
 	}
 	
-	public void addChild(Entity entity) {
+	public Entity addChild(Entity entity) {
 		children.add(entity);
+		return this;
 	}
 	
 	public void update(float delta) {
@@ -36,13 +39,13 @@ public class Entity {
 		}
 	}
 	
-	public void render() {
+	public void render(Shader shader) {
 		for (Entity child : children) {
-			child.render();
+			child.render(shader);
 		}
 		
 		for (EntityComponent component : components) {
-			component.render(transform);
+			component.render(transform, shader);
 		}
 	}
 	
