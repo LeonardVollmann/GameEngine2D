@@ -7,35 +7,21 @@ import static org.lwjgl.system.MemoryUtil.*;
 import java.nio.ByteBuffer;
 
 import nona.gameengine2d.core.Transform;
-import nona.gameengine2d.maths.Matrix4f;
+import nona.gameengine2d.input.Keyboard;
 
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
 
 public class Window {
-
-	private static Window instance;
 	
-	public static Window getInstance() {
-		if (instance == null) {
-			// TODO: Proper Error handling
-			System.err.println("ERROR: Call Window.init(int width, int height, String title) before Window.getInstance()");
-			return null;
-		}
-		
-		return instance;
-	}
+	private static long window;
+	
+	private static GLFWWindowSizeCallback windowSizeCallback;
+	private static GLFWKeyCallback keyCallback;
 	
 	public static void init(int width, int height, String title) {
-		instance = new Window(width, height, title);
-	}
-	
-	private long window;
-	
-	private Matrix4f projection;
-	
-	private Window(int width, int height, String title) {
 		if (glfwInit() != GL_TRUE) {
 			// TODO: Proper Error handling
 			System.err.println("ERROR: Failed to initialise GLFW.");
@@ -63,30 +49,45 @@ public class Window {
 		GLContext.createFromCurrent();
 		glfwSwapInterval(0);
 		
-		glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {
-			public void invoke(long window, int width, int height) {
-				updateProjection(width, height);
-			}
-		});
+		initCallbacks();
 		
 		updateProjection(width, height);
 	}
 	
-	public int shouldClose() {
+	public static int shouldClose() {
 		return glfwWindowShouldClose(window);
 	}
 	
-	public void clear(float r, float g, float b, float a) {
+	public static void clear(float r, float g, float b, float a) {
 		glClearColor(r, g, b, a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
-	public void swapBuffers() {
+	public static void swapBuffers() {
 		glfwSwapBuffers(window);
 	}
 	
-	private void updateProjection(int width, int height) {
+	private static void updateProjection(int width, int height) {
 		Transform.getCamera().updateProjection((float)width / (float)height);
+	}
+	
+	private static void initCallbacks() {
+		windowSizeCallback = new GLFWWindowSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+				updateProjection(width, height);
+			}
+		};
+		
+		keyCallback = new GLFWKeyCallback() {
+			@Override
+			public void invoke(long window, int key, int scancode, int action, int mods) {
+				Keyboard.setKey(key, action == GLFW_PRESS || action == GLFW_REPEAT);
+			}
+		};
+		
+		glfwSetWindowSizeCallback(window, windowSizeCallback);
+		glfwSetKeyCallback(window, keyCallback);
 	}
 	
 }

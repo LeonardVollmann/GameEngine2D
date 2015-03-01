@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import nona.gameengine2d.graphics.RenderingEngine;
 import nona.gameengine2d.graphics.Window;
+import nona.gameengine2d.input.Keyboard;
 
 public class CoreEngine {
 
@@ -19,7 +20,7 @@ public class CoreEngine {
 		this.game = game;
 		this.running = false;
 		
-		Window.init(width, height, title);
+		initSingletons(width, height, title);
 	}
 	
 	public void start() {
@@ -46,7 +47,7 @@ public class CoreEngine {
 		boolean shouldRender = false;
 		
 		while (running) {
-			if (Window.getInstance().shouldClose() == GL_TRUE) {
+			if (Window.shouldClose() == GL_TRUE) {
 				running = false;
 				continue;
 			}
@@ -79,17 +80,14 @@ public class CoreEngine {
 	
 	private void update(float delta) {
 		glfwPollEvents();
+		
 		game.update(delta);
+		
+		Keyboard.update();
 	}
 	
 	private void render() {
-//		Window.getInstance().clear(0.0f, 0.0f, 0.0f, 1.0f);
-//		
-//		game.render();
-//		
-//		Window.getInstance().swapBuffers();
-		
-		RenderingEngine.getInstance().render(game.getRootEntity());
+		RenderingEngine.render(game.getRootEntity());
 	}
 
 	private void init() {
@@ -100,6 +98,11 @@ public class CoreEngine {
 		glEnable(GL_DEPTH_TEST);
 		
 		game.init();
+	}
+	
+	private void initSingletons(int width, int height, String title) {
+		Keyboard.init();
+		Window.init(width, height, title);
 	}
 	
 }

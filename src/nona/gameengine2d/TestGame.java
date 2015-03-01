@@ -8,8 +8,8 @@ import nona.gameengine2d.graphics.Camera;
 import nona.gameengine2d.graphics.Mesh;
 import nona.gameengine2d.graphics.Shader;
 import nona.gameengine2d.graphics.Vertex;
-import nona.gameengine2d.graphics.Window;
 import nona.gameengine2d.graphics.primitives.Rectangle;
+import nona.gameengine2d.input.Keyboard;
 import nona.gameengine2d.maths.Vector2f;
 import nona.gameengine2d.maths.Vector3f;
 
@@ -80,6 +80,10 @@ public class TestGame extends Game {
 		
 //		rect.setWidth(sinTime);
 //		rect.setHeight(cosTime);
+//		System.out.println(Keyboard.getKey(Keyboard.KEY_SPACE));
+		if (Keyboard.getKey(Keyboard.KEY_SPACE)) {
+			System.out.println("Space");
+		}
 	}
 
 //	@Override
