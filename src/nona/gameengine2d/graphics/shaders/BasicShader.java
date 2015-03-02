@@ -2,7 +2,6 @@ package nona.gameengine2d.graphics.shaders;
 
 import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.graphics.Shader;
-import nona.gameengine2d.graphics.Window;
 
 public class BasicShader extends Shader {
 

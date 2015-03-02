@@ -7,20 +7,20 @@ import nona.gameengine2d.graphics.Window;
 import nona.gameengine2d.input.Keyboard;
 
 public class CoreEngine {
-
-	public static final boolean IGNORE_FRAMECAP = true;
 	
 	private boolean running;
 	private double nsPerUpdate;
+	private float frameTime;
 	
 	private Game game;
 	
 	public CoreEngine(int width, int height, String title, int fps, Game game) {
 		this.nsPerUpdate = 1000000000.0 / fps;
+		this.frameTime = 1.0f / fps;
 		this.game = game;
 		this.running = false;
 		
-		initSingletons(width, height, title);
+		initStatics(width, height, title);
 	}
 	
 	public void start() {
@@ -32,7 +32,6 @@ public class CoreEngine {
 		running = false;
 	}
 	
-	@SuppressWarnings("unused")
 	private void run() {
 		init();
 		
@@ -53,17 +52,17 @@ public class CoreEngine {
 			}
 			
 			now = System.nanoTime();
-			delta += now - lastTime;
+			delta += (now - lastTime) / nsPerUpdate;
 			lastTime = now;
 			
-			while (delta >= nsPerUpdate) {
-				delta -= nsPerUpdate;
-				update((float)delta);
+			while (delta >= 1.0) {
+				delta--;
+				update(frameTime);
 				updates++;
 				shouldRender = true;
 			}
 			
-			if(IGNORE_FRAMECAP || (!IGNORE_FRAMECAP && shouldRender)) {
+			if (shouldRender) {
 				render();
 				frames++;
 				shouldRender = false;
@@ -100,7 +99,7 @@ public class CoreEngine {
 		game.init();
 	}
 	
-	private void initSingletons(int width, int height, String title) {
+	private void initStatics(int width, int height, String title) {
 		Keyboard.init();
 		Window.init(width, height, title);
 	}

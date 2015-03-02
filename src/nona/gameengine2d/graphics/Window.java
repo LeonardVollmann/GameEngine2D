@@ -47,7 +47,7 @@ public class Window {
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
 		GLContext.createFromCurrent();
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
 		
 		initCallbacks();
 		
