@@ -1,6 +1,7 @@
 package nona.gameengine2d.graphics.shaders;
 
 import nona.gameengine2d.core.Transform;
+import nona.gameengine2d.graphics.RenderingEngine;
 import nona.gameengine2d.graphics.Shader;
 
 public class BasicShader extends Shader {
@@ -29,8 +30,8 @@ public class BasicShader extends Shader {
 	@Override
 	public void updateUniforms(Transform transform) {
 		setUniformMatrix4f("u_transform", transform.getTransformation());
-		setUniformMatrix4f("u_projection", Transform.getCamera().getProjection());
-		setUniformMatrix4f("u_view", Transform.getCamera().getViewMatrix());
+		setUniformMatrix4f("u_projection", RenderingEngine.getCamera().getProjection());
+		setUniformMatrix4f("u_view", RenderingEngine.getCamera().getViewMatrix());
 	}
 	
 }

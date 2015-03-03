@@ -1,5 +1,6 @@
 package nona.gameengine2d;
 
+import nona.gameengine2d.components.CameraComponent;
 import nona.gameengine2d.components.FreeMove;
 import nona.gameengine2d.components.PrimitiveRenderer;
 import nona.gameengine2d.core.Game;
@@ -14,7 +15,12 @@ public class TestGame extends Game {
 	
 	@Override
 	public void init() {
-		root.addChild(new Entity().addComponent(new PrimitiveRenderer(new Rectangle(1.0f, 1.0f))).addComponent(new FreeMove(1.0f)));
+		root.addChild(new Entity()
+			.addComponent(new PrimitiveRenderer(new Rectangle(0.1f, 0.1f)))
+			.addComponent(new FreeMove(1.0f))
+			.addComponent(new CameraComponent().setAsMainCamera()));
+		
+		root.addChild(new Entity().addComponent(new PrimitiveRenderer(new Rectangle(1.0f, 1.0f))));
 	}
 	
 	@Override

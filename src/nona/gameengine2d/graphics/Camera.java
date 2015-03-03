@@ -10,6 +10,7 @@ public class Camera {
 	
 	public Camera(Vector2f pos) {
 		this.pos = pos;
+		updateProjection(Window.getAspect());
 	}
 	
 	public Camera() {

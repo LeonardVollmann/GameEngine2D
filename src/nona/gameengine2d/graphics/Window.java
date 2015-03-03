@@ -6,9 +6,9 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.ByteBuffer;
 
-import nona.gameengine2d.core.Transform;
 import nona.gameengine2d.input.Keyboard;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.glfw.GLFWvidmode;
@@ -17,6 +17,8 @@ import org.lwjgl.opengl.GLContext;
 public class Window {
 	
 	private static long window;
+	private static int width;
+	private static int height;
 	
 	private static GLFWWindowSizeCallback windowSizeCallback;
 	private static GLFWKeyCallback keyCallback;
@@ -27,6 +29,9 @@ public class Window {
 			System.err.println("ERROR: Failed to initialise GLFW.");
 			System.exit(1);
 		}
+		
+		Window.width = width;
+		Window.height = height;
 		
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -67,14 +72,28 @@ public class Window {
 		glfwSwapBuffers(window);
 	}
 	
+	public static int getWidth() {
+		return width;
+	}
+	
+	public static int getHeight() {
+		return height;
+	}
+	
+	public static float getAspect() {
+		return (float)width / (float)height;
+	}
+	
 	private static void updateProjection(int width, int height) {
-		Transform.getCamera().updateProjection((float)width / (float)height);
+		RenderingEngine.getCamera().updateProjection((float)width / (float)height);
 	}
 	
 	private static void initCallbacks() {
 		windowSizeCallback = new GLFWWindowSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
+				Window.width = width;
+				Window.height = height;
 				updateProjection(width, height);
 			}
 		};
